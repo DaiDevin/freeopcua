@@ -8,13 +8,13 @@ endif()
 project(freeopcua)
 
 option(BUILD_CLIENT "Build Client" ON)
-option(BUILD_SERVER "Build Server" ON)
+option(BUILD_SERVER "Build Server" OFF)
 
-option(SSL_SUPPORT_MBEDTLS "Support rsa-oaep password encryption using mbedtls library " ON)
+option(SSL_SUPPORT_MBEDTLS "Support rsa-oaep password encryption using mbedtls library " OFF)
 
-option(BUILD_PYTHON "Build Python bindings" ON)
+option(BUILD_PYTHON "Build Python bindings" OFF)
 option(BUILD_TESTING "Build and run tests" OFF)
-OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
+OPTION(BUILD_SHARED_LIBS "Build shared libraries." OFF)
 
 IF (NOT DEFINED CMAKE_INSTALL_LIBDIR)
     SET(CMAKE_INSTALL_LIBDIR lib)
@@ -120,15 +120,6 @@ else(WIN32)
     SET(ADDITIONAL_LINK_LIBRARIES pthread dl ${LIBXML2_LIBRARIES})
 
 endif(WIN32)
-
-if(UNIX)
-    find_package(spdlog)
-    if(spdlog_FOUND)
-        message(STATUS "Found spdlog")
-        set(ADDITIONAL_PUBLIC_COMPILE_OPTIONS -DHAVE_SYSTEM_SPDLOG)
-        set(ADDITIONAL_LINK_LIBRARIES ${ADDITIONAL_LINK_LIBRARIES} spdlog::spdlog)
-    endif()
-endif()
 
 find_package( Boost COMPONENTS system program_options filesystem thread REQUIRED )
 include_directories( ${Boost_INCLUDE_DIRS} )
